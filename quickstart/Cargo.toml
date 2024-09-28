@@ -42,3 +42,7 @@ path = "src/tracepoint_sys_enter_openat.rs"
 [[bin]]
 name = "uprobe-readline"
 path = "src/uprobe_readline.rs"
+
+[[bin]]
+name = "tp-kill"
+path = "src/tp_kill.rs"
