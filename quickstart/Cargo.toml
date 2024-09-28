@@ -13,8 +13,8 @@ anyhow = "1"
 env_logger = "0.11.5"
 libc = "0.2"
 log = "0.4"
-tokio = { version = "1.25", features = ["macros", "rt", "rt-multi-thread", "net", "signal"] }
-
+tokio = { version = "1.25", features = ["macros", "rt", "rt-multi-thread", "net", "signal", "time"] }
+bytes = "1.5"
 [[bin]]
 name = "hello-xdp"
 path = "src/hello_xdp.rs"
@@ -46,3 +46,7 @@ path = "src/uprobe_readline.rs"
 [[bin]]
 name = "tp-kill"
 path = "src/tp_kill.rs"
+
+[[bin]]
+name = "tp-execve"
+path = "src/tp_execve.rs"

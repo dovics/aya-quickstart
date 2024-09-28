@@ -40,6 +40,11 @@ path = "src/tp_kill.rs"
 [[bin]]
 name = "uprobe-readline-ebpf"
 path = "src/uprobe_readline.rs"
+
+[[bin]]
+name = "tp-execve-ebpf"
+path = "src/tp_execve.rs"
+
 [profile.dev]
 opt-level = 3
 debug = false
