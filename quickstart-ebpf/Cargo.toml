@@ -45,6 +45,10 @@ path = "src/uprobe_readline.rs"
 name = "tp-execve-ebpf"
 path = "src/tp_execve.rs"
 
+[[bin]]
+name = "tp-exit-ebpf"
+path = "src/tp_exit.rs"
+
 [profile.dev]
 opt-level = 3
 debug = false

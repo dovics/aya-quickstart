@@ -57,7 +57,7 @@ async fn main() -> Result<(), anyhow::Error> {
             for i in 0..events.read {
                 let event = unsafe { &*(buffers[i].as_ptr() as *const Event as *const Event) };
                 let comm = String::from_utf8(event.comm.to_vec()).unwrap();
-                println!("pid: {}, ppid: {}, uid: {}, comm: {}", event.pid, event.ppid, event.uid, comm);
+                info!("pid: {}, ppid: {}, uid: {}, comm: {}", event.pid, event.ppid, event.uid, comm);
             }
         });
     }
