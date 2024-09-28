@@ -1,0 +1,40 @@
+[package]
+name = "quickstart"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+aya = "0.12"
+aya-log = "0.2"
+clap = { version = "4.1", features = ["derive"] }
+quickstart-common = { path = "../quickstart-common", features = ["user"] }
+anyhow = "1"
+env_logger = "0.11.5"
+libc = "0.2"
+log = "0.4"
+tokio = { version = "1.25", features = ["macros", "rt", "rt-multi-thread", "net", "signal"] }
+
+[[bin]]
+name = "hello-xdp"
+path = "src/hello_xdp.rs"
+
+[[bin]]
+name = "xdp-log"
+path = "src/xdp_log.rs"
+
+[[bin]]
+name = "xdp-drop"
+path = "src/xdp_drop.rs"
+
+[[bin]]
+name = "tracepoint-sys-enter-write"
+path = "src/tracepoint_sys_enter_write.rs"
+
+[[bin]]
+name = "kprobe-unlink"
+path = "src/kprobe_unlink.rs"
+
+[[bin]]
+name = "tracepoint-sys-enter-opanat"
+path = "src/tracepoint_sys_enter_opanat.rs"

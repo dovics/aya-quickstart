@@ -1,0 +1,53 @@
+[package]
+name = "quickstart-ebpf"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+aya-ebpf = "0.1.0"
+aya-log-ebpf = "0.1.0"
+quickstart-common = { path = "../quickstart-common" }
+network-types = "0.0.7"
+
+[[bin]]
+name = "hello-xdp-ebpf"
+path = "src/hello_xdp.rs"
+
+[[bin]]
+name = "xdp-log-ebpf"
+path = "src/xdp_log.rs"
+
+[[bin]]
+name = "xdp-drop-ebpf"
+path = "src/xdp_drop.rs"
+
+[[bin]]
+name = "tracepoint-sys-enter-write-ebpf"
+path = "src/tracepoint_sys_enter_write.rs"
+
+[[bin]]
+name = "kprobe-unlink-ebpf"
+path = "src/kprobe_unlink.rs"
+
+[[bin]]
+name = "tracepoint-sys-enter-openat-ebpf"
+path = "src/tracepoint_sys_enter_openat.rs"
+
+[profile.dev]
+opt-level = 3
+debug = false
+debug-assertions = false
+overflow-checks = false
+lto = true
+panic = "abort"
+incremental = false
+codegen-units = 1
+rpath = false
+
+[profile.release]
+lto = true
+panic = "abort"
+codegen-units = 1
+
+[workspace]
+members = []
