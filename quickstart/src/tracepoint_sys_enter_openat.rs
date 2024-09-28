@@ -10,7 +10,7 @@ use clap::Parser;
 #[derive(Debug, Parser)]
 struct Opt {
     #[clap(short, long, default_value = "0")]
-    pid: u64,
+    pid: u32,
 }
 
 
@@ -30,11 +30,11 @@ async fn main() -> Result<(), anyhow::Error> {
 
     #[cfg(debug_assertions)]
     let mut bpf = Bpf::load(include_bytes_aligned!(
-        "../../target/bpfel-unknown-none/debug/tracepoint-sys-enter-opanat-ebpf"
+        "../../target/bpfel-unknown-none/debug/tracepoint-sys-enter-openat-ebpf"
     ))?;
     #[cfg(not(debug_assertions))]
     let mut bpf = Bpf::load(include_bytes_aligned!(
-        "../../target/bpfel-unknown-none/release/tracepoint-sys-enter-opanat-ebpf"
+        "../../target/bpfel-unknown-none/release/tracepoint-sys-enter-openat-ebpf"
     ))?;
 
     if let Err(e) = BpfLogger::init(&mut bpf) {
@@ -47,9 +47,9 @@ async fn main() -> Result<(), anyhow::Error> {
     program.attach("syscalls", "sys_enter_openat")
         .context("failed to attach the TracePoint program")?;
 
-    let mut tarce_pid: Array<_, u64> = Array::try_from(bpf.map_mut("TRACE_PID").unwrap())?;
+    let mut tarce_pid: Array<_, u32> = Array::try_from(bpf.map_mut("LIST").unwrap())?;
     
-    tarce_pid.set(0, opt.pid, 0);
+    tarce_pid.set(0, opt.pid, 0)?;
     info!("Waiting for Ctrl-C...");
     signal::ctrl_c().await?;
     info!("Exiting...");

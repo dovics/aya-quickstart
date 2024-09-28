@@ -36,5 +36,9 @@ name = "kprobe-unlink"
 path = "src/kprobe_unlink.rs"
 
 [[bin]]
-name = "tracepoint-sys-enter-opanat"
-path = "src/tracepoint_sys_enter_opanat.rs"
+name = "tracepoint-sys-enter-openat"
+path = "src/tracepoint_sys_enter_openat.rs"
+
+[[bin]]
+name = "uprobe-readline"
+path = "src/uprobe_readline.rs"

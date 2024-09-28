@@ -10,11 +10,11 @@ use aya_ebpf::{
 use aya_log_ebpf::info;
 
 #[map]
-static LIST: Array<u64> = Array::<u64>::with_max_entries(1024, 0);
+static LIST: Array<u32> = Array::<u32>::with_max_entries(1024, 0);
 
 #[tracepoint]
 pub fn enter_openat(ctx: TracePointContext) -> u32 {
-    let pid = bpf_get_current_pid_tgid();
+    let pid: u32 = (bpf_get_current_pid_tgid() >> 32) as u32;
 
     let target = LIST.get(0);
     if target.is_some() && pid != *target.unwrap() {
@@ -22,7 +22,6 @@ pub fn enter_openat(ctx: TracePointContext) -> u32 {
     }
     
     info!(&ctx, "BPF triggered sys_enter_openat from PID {}.\n", pid);
-
     0
 }
 

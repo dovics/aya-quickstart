@@ -1,5 +1,4 @@
 use anyhow::Context;
-use aya::maps::Array;
 use aya::programs::TracePoint;
 use aya::{include_bytes_aligned, Bpf};
 use aya_log::BpfLogger;
@@ -37,9 +36,6 @@ async fn main() -> Result<(), anyhow::Error> {
     program.load()?;
     program.attach("syscalls", "sys_enter_write")
         .context("failed to attach the TracePoint program")?;
-
-    let mut trace_pid = Array::try_from(bpf.map("TRACE_PID").unwrap())?;
-    trace_pid.set(0, 0, 0);
     
     info!("Waiting for Ctrl-C...");
     signal::ctrl_c().await?;
