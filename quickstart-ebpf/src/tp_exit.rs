@@ -26,7 +26,7 @@ pub fn sched_process_exit(_ctx: TracePointContext) -> u32 {
     }
 
     let event = unsafe { &mut *(event_ptr as *mut Event) };
-    let task_ptr = unsafe { bpf_get_current_task_btf() as *const task_struct };
+    let task_ptr = unsafe { bpf_get_current_task_btf() as *const task_struct };    
     let task = unsafe { core::ptr::read(task_ptr) };
     event.pid = pid;
     event.duration = unsafe { bpf_ktime_get_ns() } - task.start_time;
