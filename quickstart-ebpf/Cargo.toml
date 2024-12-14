@@ -49,6 +49,10 @@ path = "src/tp_execve.rs"
 name = "tp-exit-ebpf"
 path = "src/tp_exit.rs"
 
+[[bin]]
+name = "oomkill-ebpf"
+path = "src/oomkill.rs"
+
 [profile.dev]
 opt-level = 3
 debug = false
