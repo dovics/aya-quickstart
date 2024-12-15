@@ -1,9 +1,8 @@
 use aya::{include_bytes_aligned, maps::PerfEventArray, programs::KProbe, util::online_cpus, Bpf};
-use aya_log::BpfLogger;
 use bytes::BytesMut;
-use log::{info, warn};
-use quickstart_common::oom_event::Event;
 use chrono::Local;
+use log::info;
+use quickstart_common::oom_event::Event;
 
 #[tokio::main]
 async fn main() -> Result<(), anyhow::Error> {
@@ -21,17 +20,12 @@ async fn main() -> Result<(), anyhow::Error> {
     let mut bpf = Bpf::load(include_bytes_aligned!(
         "../../target/bpfel-unknown-none/release/oomkill-ebpf"
     ))?;
-    if let Err(e) = BpfLogger::init(&mut bpf) {
-        // This can happen if you remove all log statements from your eBPF program.
-        warn!("failed to initialize eBPF logger: {e}");
-    }
-    let program: &mut KProbe =
-        bpf.program_mut("kprobe_oomkill").unwrap().try_into()?;
+
+    let program: &mut KProbe = bpf.program_mut("kprobe_oomkill").unwrap().try_into()?;
     program.load()?;
     program.attach("oom_kill_process", 0)?;
 
-    let mut events =
-        PerfEventArray::try_from(bpf.map_mut("EVENTS").unwrap())?;
+    let mut events = PerfEventArray::try_from(bpf.map_mut("EVENTS").unwrap())?;
 
     let mut perf_buffers = Vec::new();
     for cpu_id in online_cpus()? {
@@ -51,7 +45,10 @@ async fn main() -> Result<(), anyhow::Error> {
                 let fcomm = String::from_utf8(event.fcomm.to_vec()).unwrap();
                 let now = Local::now().format("%H:%M:%S");
 
-                info!("{} Triggered by PID {} ({}), OOM kill of PID {} ({}), {} pages, loadavg", now, event.fpid, fcomm, event.tpid,tcomm,  event.pages);
+                info!(
+                    "{} Triggered by PID {} ({}), OOM kill of PID {} ({}), {} pages, loadavg",
+                    now, event.fpid, fcomm, event.tpid, tcomm, event.pages
+                );
             }
         });
     }

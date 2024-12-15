@@ -53,6 +53,10 @@ path = "src/tp_exit.rs"
 name = "oomkill-ebpf"
 path = "src/oomkill.rs"
 
+[[bin]]
+name = "tcpaccept-ebpf"
+path = "src/tcp_accept.rs"
+
 [profile.dev]
 opt-level = 3
 debug = false

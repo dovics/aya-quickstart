@@ -60,3 +60,7 @@ path = "src/tp_exit.rs"
 [[bin]]
 name = "oomkill"
 path = "src/oomkill.rs"
+
+[[bin]]
+name = "tcpaccept"
+path = "src/tcpaccept.rs"
