@@ -1,8 +1,8 @@
 #![no_std]
 #![no_main]
 mod vmlinux;
-
-use core::{mem::offset_of, str::{from_utf8, from_utf8_unchecked}};
+mod utils;
+use core::{mem::offset_of, str::from_utf8_unchecked};
 
 use aya_ebpf::{
     helpers::{bpf_get_current_comm, bpf_get_current_pid_tgid, bpf_probe_read_kernel},
@@ -21,12 +21,6 @@ pub fn kretprobe_inet_csk_accept(ctx: ProbeContext) -> u32 {
     }
 }
 
-macro_rules! filed_of {
-    ($ptr:ident ,$ty:ty, $field:ident) => {{
-        let filed_offset = offset_of!($ty, $field);
-        unsafe { bpf_probe_read_kernel(($ptr as usize + filed_offset) as *const _) }?
-    }};
-}
 
 fn try_inet_csk_accept(ctx: ProbeContext) -> Result<u32, i64> {
     let sk_ptr: *const sock = ctx.ret().ok_or(0)?;
@@ -47,7 +41,7 @@ fn try_inet_csk_accept(ctx: ProbeContext) -> Result<u32, i64> {
     let daddr = unsafe { skc.__bindgen_anon_1.__bindgen_anon_1.skc_daddr };
 
     let comm = bpf_get_current_comm()?;
-    
+
     let comm_str = unsafe { from_utf8_unchecked(&comm) };
     info!(
         &ctx,

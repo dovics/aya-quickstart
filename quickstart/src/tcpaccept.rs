@@ -20,12 +20,7 @@ async fn main() -> Result<(), anyhow::Error> {
         // This can happen if you remove all log statements from your eBPF program.
         warn!("failed to initialize eBPF logger: {}", e);
     }
-
-    bpf.programs().all(|(name, _)| {
-        info!("{}", name);
-        true
-    });
-
+    
     let program: &mut KProbe = bpf
         .program_mut("kretprobe_inet_csk_accept")
         .unwrap()
